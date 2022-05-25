@@ -1,25 +1,36 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
 
-function App() {
+const App = () => {
+  const [state, setState] = useState([]);
+  const [val, setVal] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setState((prevState) => [...prevState, val]);
+    setVal('');
+  };
+
+  const handleDeleteClick = (item) => {
+    setState((prevState) => prevState.filter((i) => i !== item));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input value={val} onChange={(e) => setVal(e.target.value)} type="text" />
+        <button>Add</button>
+      </form>
+      <ul>
+        {state.map((item, index) => (
+          <div key={index} style={{ display: 'flex' }}>
+            <li>{item}</li>
+            <button onClick={() => handleDeleteClick(item)}>Delete</button>
+          </div>
+        ))}
+      </ul>
     </div>
   );
-}
+};
 
 export default App;
